@@ -1,47 +1,62 @@
-# Mini Trello — MERN Stack Task Management Application
+Mini Trello — MERN Stack Task Management Application
 
-A 3-tier task management application built using the **MERN Stack**:
+A full-stack task management application inspired by Trello, built using the MERN Stack with a clean 3-tier enterprise architecture.
 
-* **MongoDB** — Database layer
-* **Express.js** — Backend API framework
-* **React.js** — Frontend UI
-* **Node.js** — Server runtime
+The application provides a Kanban-style task board where users can create, update, delete, and manage tasks based on status and priority.
 
-The application follows a clean enterprise-style architecture with separation of concerns between presentation, business logic, and data access layers.
+🚀 Tech Stack
+Frontend
+React.js
+Axios
+CSS
+Backend
+Node.js
+Express.js
+Mongoose
+Database
+MongoDB
+DevOps
+Docker
+Docker Compose
+Container Networking
+🏗️ Application Architecture
 
----
+The application follows a layered enterprise architecture:
 
-## 🏗️ Architecture
-
-```
-Presentation Layer
-        ↓
-React (frontend/)
-
-Business Logic Layer
-        ↓
-Node.js + Express
-(backend/controllers + backend/services)
-
-Data Access Layer
-        ↓
-MongoDB + Mongoose
-(backend/models)
-```
-
-### Request Flow
-
-```
-Route → Controller → Service → Model → MongoDB
-```
-
----
-
-# 📂 Project Structure
-
-```
+                 Client
+                   |
+                   ↓
+          React Presentation Layer
+              (frontend)
+                   |
+                   ↓
+          Express REST API Layer
+              (backend)
+                   |
+                   ↓
+          Business Logic Layer
+        (controllers + services)
+                   |
+                   ↓
+          Data Access Layer
+          (Mongoose Models)
+                   |
+                   ↓
+               MongoDB
+Request Flow
+Route
+  ↓
+Controller
+  ↓
+Service
+  ↓
+Model
+  ↓
+MongoDB
+📂 Project Structure
 mern-task-manager/
 
+│
 ├── backend/
 │
 │   ├── controllers/
@@ -62,351 +77,279 @@ mern-task-manager/
 │   ├── middleware/
 │   │   └── errorHandler.js
 │   │
-│   ├── .env
+│   ├── Dockerfile
 │   ├── app.js
 │   ├── server.js
 │   └── package.json
 │
-└── frontend/
-
-    ├── public/
-    │   └── index.html
-    │
-    ├── src/
-    │
-    │   ├── components/
-    │   │   ├── TaskCard.jsx
-    │   │   ├── TaskForm.jsx
-    │   │   └── TaskList.jsx
-    │   │
-    │   ├── pages/
-    │   │   └── Dashboard.jsx
-    │   │
-    │   ├── services/
-    │   │   └── taskService.js
-    │   │
-    │   ├── App.js
-    │   ├── App.css
-    │   ├── index.js
-    │   └── index.css
-    │
-    └── package.json
-```
-
----
-
-# 🔌 API Routes
-
-Base URL:
-
-```
-http://localhost:5000
-```
-
-| Method | Endpoint     | Description       |
-| ------ | ------------ | ----------------- |
-| GET    | `/tasks`     | Get all tasks     |
-| POST   | `/tasks`     | Create a new task |
-| GET    | `/tasks/:id` | Get task by ID    |
-| PUT    | `/tasks/:id` | Update task       |
-| DELETE | `/tasks/:id` | Delete task       |
-
-### Query Filters
-
-Tasks can be filtered using:
-
-```
-GET /tasks?status=TODO
-GET /tasks?priority=HIGH
-```
-
----
-
-# 📋 Task Schema
-
-```javascript
+│
+├── frontend/
+│
+│   ├── src/
+│   │
+│   │   ├── components/
+│   │   │   ├── TaskCard.jsx
+│   │   │   ├── TaskForm.jsx
+│   │   │   └── TaskList.jsx
+│   │   │
+│   │   ├── pages/
+│   │   │   └── Dashboard.jsx
+│   │   │
+│   │   ├── services/
+│   │   │   └── taskService.js
+│   │   │
+│   │   ├── App.js
+│   │   └── index.js
+│   │
+│   ├── Dockerfile
+│   └── package.json
+│
+│
+└── docker-compose.yml
+✨ Features
+Create tasks
+View tasks
+Update tasks
+Delete tasks
+Kanban-style dashboard
+Task filtering
+Status management
+Priority management
+Due date tracking
+Dockerized deployment
+📋 Task Model
 {
     title: String,
 
     description: String,
 
     status:
-    "TODO" |
-    "IN_PROGRESS" |
-    "COMPLETED",
+        "TODO" |
+        "IN_PROGRESS" |
+        "COMPLETED",
 
     priority:
-    "LOW" |
-    "MEDIUM" |
-    "HIGH",
+        "LOW" |
+        "MEDIUM" |
+        "HIGH",
 
     dueDate: Date,
 
     createdAt: Date
 }
-```
+🔌 REST API Documentation
 
----
+Base URL:
 
-# ⚙️ Installation
+http://localhost:5000
+Method	Endpoint	Description
+GET	/tasks	Get all tasks
+POST	/tasks	Create new task
+GET	/tasks/:id	Get task by ID
+PUT	/tasks/:id	Update task
+DELETE	/tasks/:id	Delete task
+Filtering Tasks
 
-## 1. Clone Repository
+Filter by status:
 
-```bash
+GET /tasks?status=TODO
+
+Filter by priority:
+
+GET /tasks?priority=HIGH
+🐳 Docker Deployment
+
+The complete application runs using Docker Compose:
+
+Services:
+
+Frontend
+    |
+    |
+Backend
+    |
+    |
+MongoDB
+Dockerfile — Backend
+
+backend/Dockerfile
+
+FROM node:18.9.1
+
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["npm", "run", "dev"]
+Dockerfile — Frontend
+
+frontend/Dockerfile
+
+FROM node:18.9.1
+
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+Docker Compose Configuration
+
+docker-compose.yml
+
+services:
+
+  frontend:
+
+    build: ./frontend
+
+    ports:
+      - "3000:3000"
+
+    networks:
+      - network
+
+
+  backend:
+
+    build: ./backend
+
+    ports:
+      - "5000:5000"
+
+    environment:
+
+      PORT: 5000
+
+      MONGO_URI: mongodb://mongo:27017/mini-trello
+
+    networks:
+      - network
+
+    depends_on:
+      - mongo
+
+
+
+  mongo:
+
+    image: mongo:latest
+
+    ports:
+      - "27017:27017"
+
+    networks:
+      - network
+
+    volumes:
+      - mongo-data:/data/db
+
+
+
+networks:
+
+  network:
+
+    driver: bridge
+
+
+
+volumes:
+
+  mongo-data:
+
+    driver: local
+⚙️ Running Locally
+Clone Repository
 git clone <repository-url>
 
 cd mern-task-manager
-```
+Run with Docker Compose
 
----
+Build containers:
 
-# Backend Setup
+docker compose build
 
-Navigate to backend:
+Start application:
 
-```bash
-cd backend
-```
+docker compose up
 
-Install dependencies:
+Run in background:
 
-```bash
-npm install
-```
+docker compose up -d
+Application URLs
 
-Create/update `.env`:
+Frontend:
 
-```
-PORT=5000
-
-MONGO_URI=mongodb://localhost:27017/mini_trello
-```
-
----
-
-# Frontend Setup
-
-Navigate to frontend:
-
-```bash
-cd frontend
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
----
-
-# ▶️ Running the Application
-
-## Start Backend
-
-Runs on:
-
-```
-http://localhost:5000
-```
-
-Command:
-
-```bash
-cd backend
-
-npm run dev
-```
-
-or:
-
-```bash
-npm start
-```
-
----
-
-## Start Frontend
-
-Runs on:
-
-```
 http://localhost:3000
-```
-
-Command:
-
-```bash
-cd frontend
-
-npm start
-```
-
-The React application communicates with the backend API running on:
-
-```
-http://localhost:5000
-```
-
----
-
-# 🚀 Features
-
-✅ Create tasks
-✅ View tasks
-✅ Update tasks
-✅ Delete tasks
-✅ Kanban-style dashboard
-
-Task columns:
-
-```
-TODO
-IN_PROGRESS
-COMPLETED
-```
-
-Additional features:
-
-* Filter tasks by status
-* Filter tasks by priority
-* Track due dates
-* Enterprise-style layered backend architecture
-
----
-
-# 🐳 Docker Setup
-
-## Create Frontend Docker Image
-
-```bash
-docker build -t frontend .
-```
-
-Create Docker network:
-
-```bash
-docker network create network
-```
-
-Run frontend container:
-
-```bash
-docker run \
---name=frontend \
---network=network \
--d \
--p 3000:3000 \
-frontend
-```
-
-Application:
-
-```
-http://localhost:3000
-```
-
----
-
-# MongoDB Docker Setup
-
-Pull MongoDB image:
-
-```bash
-docker pull mongo:latest
-```
-
-Run MongoDB container:
-
-```bash
-docker run \
---network=network \
---name mongodb \
--d \
--p 27017:27017 \
--v ~/opt/data:/data/db \
-mongo:latest
-```
-
-MongoDB will run on:
-
-```
-localhost:27017
-```
-
----
-
-# Backend Docker Setup
-
-Build backend image:
-
-```bash
-docker build -t backend .
-```
-
-Run backend container:
-
-```bash
-docker run \
---name=backend \
---network=network \
--d \
--p 5000:5000 \
-backend
-```
 
 Backend API:
 
-```
 http://localhost:5000
-```
 
----
+MongoDB:
 
-# ✅ Verify Deployment
+mongodb://localhost:27017
+Verify Containers
 
-Check frontend:
+Check running containers:
 
-```
-ping localhost:3000
-```
+docker ps
 
-If the React application loads successfully, the deployment is working.
+Expected:
 
-Check MongoDB:
+frontend
+backend
+mongo
+Stop Application
+docker compose down
 
-```
-ping localhost:27017
-```
+Remove volumes:
 
-Check backend:
+docker compose down -v
+Environment Configuration
 
-```
-ping localhost:5000
-```
+Backend .env
 
----
+PORT=5000
 
-# 🛠️ Technology Stack
+MONGO_URI=mongodb://mongo:27017/mini-trello
+Development Setup Without Docker
+Backend
+cd backend
 
-### Frontend
+npm install
 
-* React.js
-* CSS
-* Axios
+npm run dev
 
-### Backend
+Runs:
 
-* Node.js
-* Express.js
-* Mongoose
+http://localhost:5000
+Frontend
+cd frontend
 
-### Database
+npm install
 
-* MongoDB
+npm start
 
-### Deployment
+Runs:
 
-* Docker
-* Docker Network
-
+http://localhost:3000
+Future Enhancements
+JWT Authentication
+User Management
+Task Assignment
+Drag and Drop Kanban
+Role Based Access Control
+Real-time Updates using Socket.io
